@@ -3,17 +3,20 @@ session_start();
 
 require 'databse.php';
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
-  $records->bindParam(':id', $_SESSION['user_id']);
-  $records->execute();
-  $results = $records->fetch(PDO::FETCH_ASSOC);
+    $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
 
-  $user = null;
+    $user = null;
 
-  if (count($results) > 0) {
-    $user = $results;
-  }
+    if (count($results) > 0) {
+        $user = $results;
+    }
+}else{
+    header('Location: /php-login/index.php');
 }
+
 ?>
 
 
@@ -22,7 +25,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->  
+    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
@@ -52,10 +55,10 @@ if (isset($_SESSION['user_id'])) {
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-   
-    
- 
-    
+
+
+
+
     <script src="JsBarcode.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -86,7 +89,7 @@ if (isset($_SESSION['user_id'])) {
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Codigo de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Codigo QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -109,7 +112,7 @@ if (isset($_SESSION['user_id'])) {
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Código de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Código QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -128,31 +131,35 @@ if (isset($_SESSION['user_id'])) {
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            
+
                             <div class="header-button">
-                                
+
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/usuario.png" alt="John Doe" />
+                                            <img src="images/usuario.png" alt="<?= $user['name'] ?>" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#"><?= $user['email'] ?></a>
+                                            <a class="js-acc-btn" href="#">
+                                                <?= $user['name'] ?>
+                                            </a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/usuario.png" alt="John Doe" />
+                                                        <img src="images/usuario.png" alt="Foto de perfil" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
-                                                    <span class="email"><?= $user['email'] ?></span>
+                                                    <span class="email">
+                                                        <?= $user['email'] ?>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <a href="logout.php">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    <i class="zmdi zmdi-power"></i>Cerrar sesión</a>
                                             </div>
                                         </div>
                                     </div>
@@ -170,49 +177,49 @@ if (isset($_SESSION['user_id'])) {
 
 
 
-                   
+
                     <div class="container-fluid">
 
-                        
-                        <div class="row m-t-25">
-                            <canvas id="qr"></canvas>
+
+                        <div class="row m-t-25" style="justify-content: center">
+                            <canvas id="qr" style="	max-width: 350px;max-height: 350px;width: 100%;"></canvas>
                         </div>
                     </div>
 
 
-                     
 
-                    
 
-                    <div class="container-fluid">
+
+
+                    <div class="container-fluid" style="display: flex;justify-content: center;">
                         <br>
-                        <button id="updateUserIdsButton" align-items="center" >Actualizar Código de Barras</button>
+                        <button id="updateUserIdsButton" align-items="center">Actualizar Código QR</button>
 
 
 
 
                         <script>
-                          $(document).ready(function() {
-                            $("#updateUserIdsButton").click(function() {
-                              // Realiza una solicitud AJAX al servidor para actualizar el user_ids
-                              $.ajax({
-                                type: "POST",
-                                url: "actualizar.php", // Ruta al script PHP que manejará la actualización
-                                data: {
-                                  // Envía el ID del usuario u otros datos necesarios
-                                  user_id: <?= $user['idusers'] ?> // Reemplaza con el ID de usuario real
-                                },
-                                success: function(response) {
-                                  if (response === 'success') {
-                                    // alert('user_ids actualizado con éxito.');
-                                    location.reload();
-                                  } else {
-                                    alert('Hubo un error al actualizar user_ids.');
-                                  }
-                                }
-                              });
+                            $(document).ready(function () {
+                                $("#updateUserIdsButton").click(function () {
+                                    // Realiza una solicitud AJAX al servidor para actualizar el user_ids
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "actualizar.php", // Ruta al script PHP que manejará la actualización
+                                        data: {
+                                            // Envía el ID del usuario u otros datos necesarios
+                                            user_id: <?= $user['idusers'] ?> // Reemplaza con el ID de usuario real
+                                        },
+                                        success: function (response) {
+                                            if (response === 'success') {
+                                                // alert('user_ids actualizado con éxito.');
+                                                location.reload();
+                                            } else {
+                                                alert('Hubo un error al actualizar user_ids.');
+                                            }
+                                        }
+                                    });
+                                });
                             });
-                          });
                         </script>
                     </div>
 
@@ -248,10 +255,10 @@ if (isset($_SESSION['user_id'])) {
     <script src="vendor/select2/select2.min.js">
     </script>
 
-    
 
 
-    
+
+
 
     <!-- Main JS-->
     <script src="js/qrious.js"></script>
@@ -262,10 +269,10 @@ if (isset($_SESSION['user_id'])) {
     <script>
         var id_usuario = <?= $user['user_ids'] ?>;
         var qr = new QRious({
-        element: document.getElementById('qr'),
-        value: id_usuario.toString()
+            element: document.getElementById('qr'),
+            value: id_usuario.toString()
         });
-   
+
     </script>
 
 

@@ -13,6 +13,8 @@ if (isset($_SESSION['user_id'])) {
   if (count($results) > 0) {
     $user = $results;
   }
+}else{
+  header('Location: /php-login/index.php');
 }
 ?>
 
@@ -32,7 +34,7 @@ if (isset($_SESSION['user_id'])) {
     <div class="logo">
       <h1>Bienvenido <?= $user['email'] ?></h1>
       <h1>Tu ID es <?= $user['user_ids'] ?></h1>
-      <h2><a id="logoutButton" href="logout.php">LOGOUT</a></h2>
+      <h2><a id="logoutButton" href="logout.php">Cerrar sesión</a></h2>
       
     </div>
 

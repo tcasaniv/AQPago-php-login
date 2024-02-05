@@ -3,16 +3,18 @@ session_start();
 
 require 'databse.php';
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
-  $records->bindParam(':id', $_SESSION['user_id']);
-  $records->execute();
-  $results = $records->fetch(PDO::FETCH_ASSOC);
+    $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
 
-  $user = null;
+    $user = null;
 
-  if (count($results) > 0) {
-    $user = $results;
-  }
+    if (count($results) > 0) {
+        $user = $results;
+    }
+}else{
+    header('Location: /php-login/index.php');
 }
 ?>
 
@@ -22,7 +24,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->  
+    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
@@ -75,12 +77,12 @@ if (isset($_SESSION['user_id'])) {
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li>
-                            <a  href="index3.php">
+                            <a href="index3.php">
                                 <i class="fas fa-tachometer-alt"></i>Saldo</a>
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Codigo de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Codigo QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -103,7 +105,7 @@ if (isset($_SESSION['user_id'])) {
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Código de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Código QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -122,31 +124,35 @@ if (isset($_SESSION['user_id'])) {
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            
+
                             <div class="header-button">
-                                
+
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/usuario.png" alt="John Doe" />
+                                            <img src="images/usuario.png" alt="<?= $user['name'] ?>" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#"><?= $user['email'] ?></a>
+                                            <a class="js-acc-btn" href="#">
+                                                <?= $user['name'] ?>
+                                            </a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/usuario.png" alt="John Doe" />
+                                                        <img src="images/usuario.png" alt="Foto de perfil" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
-                                                    <span class="email"><?= $user['email'] ?></span>
+                                                    <span class="email">
+                                                        <?= $user['email'] ?>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <a href="logout.php">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    <i class="zmdi zmdi-power"></i>Cerrar sesión</a>
                                             </div>
                                         </div>
                                     </div>
@@ -164,45 +170,48 @@ if (isset($_SESSION['user_id'])) {
                     <div class="container-fluid">
 
 
-                      
 
-                      
-                        
+
+
+
                         <div class="row m-t-25">
-                            <div class="col-sm-6 col-lg-3">
+                            <div class="col-sm-6 col-lg-6">
                                 <div class="overview-item overview-item--c4">
                                     <div class="overview__inner">
 
                                         <div class="overview-box clearfix">
                                             <div class="icon">
-                                                <i class="zmdi zmdi-money"></i>
+                                                <i class="zmdi">S/ </i>
                                             </div>
                                             <div class="text">
-                                                <h2><?= $user['saldo'] ?></h2>
+                                                <h2>
+                                                    <?= $user['saldo'] ?>
+                                                </h2>
                                                 <span>Saldo Total</span>
                                             </div>
                                         </div>
                                     </div>
-   
+
                                 </div>
 
 
-                               
+
                                 <div class="container-fluid">
-                                  <div class="operation-form">
-                                    <form action="aumentar_reducir_saldo.php" method="post">
-                                      <label for="aumentar">Recargar Saldo:</label>
-                                      <br>
+                                    <div class="operation-form">
+                                        <form action="aumentar_reducir_saldo.php" method="post">
+                                            <label for="aumentar">Recargar Saldo:</label>
+                                            <br>
 
-                                      <div class="input-group">
-                                        <input type="number" name="aumentar" id="aumentar" required>
+                                            <div class="input-group">
+                                                <input type="number" name="aumentar" id="aumentar" required class="form-control" placeholder="Ingresa el monto" aria-label="Monto a recargar">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="submit"><br>Recargar<br><br></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
 
-                                        <button type="submit"><br>Recargar<br><br></button>
-                                      </div>
-                                    </form>
-                                  </div>
-
-                                  <div class="operation-form">
+                                    <!--div class="operation-form">
                                     <form action="aumentar_reducir_saldo.php" method="post">
                                       <label for="reducir">Reducir Saldo (Prueba): <br></label>
             
@@ -213,49 +222,49 @@ if (isset($_SESSION['user_id'])) {
                                       </div>
                                     </form>
                                   </div>
+                                </div -->
+
+
+
+
                                 </div>
-
-
-
-                              
                             </div>
+
+
+
+
                         </div>
-                        
-                        
-                        
-                        
                     </div>
                 </div>
+                <!-- END MAIN CONTENT-->
+                <!-- END PAGE CONTAINER-->
             </div>
-            <!-- END MAIN CONTENT-->
-            <!-- END PAGE CONTAINER-->
+
         </div>
 
-    </div>
+        <!-- Jquery JS-->
+        <script src="vendor/jquery-3.2.1.min.js"></script>
+        <!-- Bootstrap JS-->
+        <script src="vendor/bootstrap-4.1/popper.min.js"></script>
+        <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+        <!-- Vendor JS       -->
+        <script src="vendor/slick/slick.min.js">
+        </script>
+        <script src="vendor/wow/wow.min.js"></script>
+        <script src="vendor/animsition/animsition.min.js"></script>
+        <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+        </script>
+        <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
+        <script src="vendor/counter-up/jquery.counterup.min.js">
+        </script>
+        <script src="vendor/circle-progress/circle-progress.min.js"></script>
+        <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="vendor/chartjs/Chart.bundle.min.js"></script>
+        <script src="vendor/select2/select2.min.js">
+        </script>
 
-    <!-- Jquery JS-->
-    <script src="vendor/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
-    </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
-    </script>
-
-    <!-- Main JS-->
-    <script src="js/main.js"></script>
+        <!-- Main JS-->
+        <script src="js/main.js"></script>
 
 </body>
 

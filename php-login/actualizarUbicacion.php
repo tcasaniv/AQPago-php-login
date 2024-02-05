@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if ($stmt->execute()) {
                         //echo "Ubicación actualizada con éxito. La distancia entre el estado 1 y el estado 0 es: $distancia_en_metros metros. Saldo actualizado: $nuevo_saldo";
-                        header("Location: login.php");
+                        header("Location: autenticacion.php");
                     } else {
                         echo 'Hubo un error al actualizar la ubicación y el saldo.';
                     }
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
                     // Redirige a la página de inicio o a donde desees
-                    header("Location: login.php");
+                    header("Location: autenticacion.php");
                 } else {
                     echo 'Hubo un error al actualizar la ubicación y el saldo.';
                 }
@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($stmt->execute()) {
                     //echo "Ubicación actualizada con éxito. Saldo no afectado.";
-                    header("Location: login.php");
+                    header("Location: autenticacion.php");
                 } else {
                     echo 'Hubo un error al actualizar la ubicación.';
                 }

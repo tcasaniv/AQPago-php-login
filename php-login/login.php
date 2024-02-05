@@ -3,7 +3,7 @@
   session_start();
 
   if (isset($_SESSION['user_id'])) {
-    header('Location: /php-login/index2.php');
+    header('Location: /php-login/index3.php');
   }  
   require 'databse.php';
 
@@ -56,13 +56,12 @@
         <form action="login.php" method="POST">
           <input name ="email" type="text" placeholder="Correo electronico" required />
           <input name ="password" type="password" placeholder="Contraseña" required />
-          <a href="#">Olvido la contraseña?</a>
-
-            <div style="position: center; bottom: 2px; padding: 10px; color: #fff;background: #373737; width: 320px; margin: 30px auto; margin-top: 0;border: 0;border-radius: 3px;cursor: pointer; text-decoration: none; border: #eee;" >
-              <a href="/php-login/index.php" style="text-decoration: none;"><font color="white">Ir a Inicio</font></a> 
-            </div>
-
-
+          <a href="#" style="color: white;" >Olvido la contraseña?</a>
+          <div style="position: center; bottom: 2px; padding: 10px; color: #fff;background: #373737; width: 320px; margin: 30px auto; margin-top: 0;border: 0;border-radius: 3px;cursor: pointer; text-decoration: none; border: #eee;" >
+            <a href="/php-login/index.php" style="text-decoration: none;">
+              <font color="white">Ir a Inicio</font>
+            </a> 
+          </div>
           <input type="submit" value="Login" />
         </form>
       </div>
@@ -88,7 +87,7 @@
         });
       </script>
 
-      <form action="actualizarUbicacion.php" method="POST">
+      <!--form action="actualizarUbicacion.php" method="POST">
         <label for="user_ids">User IDs:</label>
         <input type="text" name="user_ids" required>
 
@@ -99,7 +98,7 @@
         <input type="text" name="longitud" required>
 
         <button type="submit">Actualizar Ubicación</button>
-      </form>
+      </form-->
       
 
     </section>

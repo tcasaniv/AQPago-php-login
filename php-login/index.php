@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <!-- Basic -->
@@ -9,19 +9,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Site Metas -->
   <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <meta name="description" content="Sistema web de gestión de pagos para el transporte público." />
+  <meta name="author" content="AQPago | A7" />
 
-  <title>Spering</title>
+  <title>AQPago</title>
 
   <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="/php-login/css/bootstrap.css" />
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
+  <link href="/php-login/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
+  <link href="/php-login/css/responsive.css" rel="stylesheet" />
+  <style>
+    #acceder-btn {
+      background-color: #DC143C;
+    }
+  </style>
 </head>
 
 <body>
@@ -34,8 +39,8 @@
           
           <div>
             <div class="custom_menu-btn ">
-              <button>
-              </button>
+              <!-- <button>
+              </button> -->
             </div>
           </div>
 
@@ -59,22 +64,22 @@
                 <div class="col-md-5 offset-md-1">
                   <div class="detail-box">
                     <h1>
-                      Proyecto <br>
-                      Gestion de Pagos
+                      AQPago<br>
+                      Sistema de Gestion de Pagos
                     </h1>
                     <div class="btn-box">
-                      <a href="/php-login/login.php" class="btn-1">
-                        LOGIN
+                      <a href="/php-login/autenticacion.php" class="btn-1" id="acceder-btn">
+                        Acceder
                       </a>
-                      <a href="/php-login/signup.php" class="btn-2">
-                        SIGNUP
-                      </a>
+                      <!-- <a href="/php-login/signup.php" class="btn-2">
+                        Registrarse
+                      </a> -->
                     </div>
                   </div>
                 </div>
                 <div class="offset-md-1 col-md-4 img-container">
                   <div class="img-box">
-                    <img src="images/combi.png" alt="">
+                    <img src="/php-login/images/combi.png" alt="">
                   </div>
                 </div>
               </div>

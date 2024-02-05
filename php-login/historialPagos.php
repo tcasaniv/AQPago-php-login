@@ -3,21 +3,19 @@ session_start();
 
 require 'databse.php';
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
-  $records->bindParam(':id', $_SESSION['user_id']);
-  $records->execute();
-  $results = $records->fetch(PDO::FETCH_ASSOC);
+    $records = $conn->prepare('SELECT idusers, name, email, password, user_ids, saldo FROM users WHERE idusers = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
 
-  $user = null;
+    $user = null;
 
-  if (count($results) > 0) {
-    $user = $results;
-  }
+    if (count($results) > 0) {
+        $user = $results;
+    }
+}else{
+    header('Location: /php-login/index.php');
 }
-
-
-
-
 
 ?>
 
@@ -27,7 +25,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->  
+    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
@@ -35,7 +33,7 @@ if (isset($_SESSION['user_id'])) {
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>AQPago | Dashboard</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -59,7 +57,7 @@ if (isset($_SESSION['user_id'])) {
     <link href="css/theme.css" rel="stylesheet" media="all">
     <script src="JsBarcode.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
 
 
 </head>
@@ -88,7 +86,7 @@ if (isset($_SESSION['user_id'])) {
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Codigo de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Codigo QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -111,7 +109,7 @@ if (isset($_SESSION['user_id'])) {
                         </li>
                         <li>
                             <a href="codigoBarras.php">
-                                <i class="fas fa-chart-bar"></i>Código de Barras</a>
+                                <i class="fas fa-chart-bar"></i>Código QR</a>
                         </li>
                         <li>
                             <a href="historialPagos.php">
@@ -130,31 +128,35 @@ if (isset($_SESSION['user_id'])) {
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            
+
                             <div class="header-button">
-                                
+
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/usuario.png" alt="John Doe" />
+                                            <img src="images/usuario.png" alt="<?= $user['name'] ?>" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#"><?= $user['email'] ?></a>
+                                            <a class="js-acc-btn" href="#">
+                                                <?= $user['name'] ?>
+                                            </a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/usuario.png" alt="John Doe" />
+                                                        <img src="images/usuario.png" alt="Foto de perfil" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
-                                                    <span class="email"><?= $user['email'] ?></span>
+                                                    <span class="email">
+                                                        <?= $user['email'] ?>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <a href="logout.php">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    <i class="zmdi zmdi-power"></i>Cerrar sesión</a>
                                             </div>
                                         </div>
                                     </div>
@@ -169,111 +171,126 @@ if (isset($_SESSION['user_id'])) {
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
-                   <div class="section__content section__content--p30">
+                    <div class="section__content section__content--p30 table-responsive">
 
 
-                    <!-- Agrega esta sección en tu HTML para mostrar el historial de pagos -->
-                    <h2>Historial de Pagos</h2>
-                    <table border="2">
-                        <thead>
-                            <tr>
-                                <th>Fecha de Pago</th>
-                                <th>Monto Pagado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                        <!-- Agrega esta sección en tu HTML para mostrar el historial de pagos -->
+                        <h2>Historial de Pagos</h2>
+                        <table border="2"  class="table table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Fecha de Pago</th>
+                                    <th scope="col">Monto Pagado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            <style>
-                            .pagination {
-                              display: inline-block;
-                            }
+                                <style>
+                                    .pagination {
+                                        display: inline-block;
+                                    }
 
-                            .pagination a {
-                              color: black;
-                              float: left;
-                              padding: 8px 16px;
-                              text-decoration: none;
-                            }
+                                    .pagination a {
+                                        color: black;
+                                        float: left;
+                                        padding: 8px 16px;
+                                        text-decoration: none;
+                                    }
 
-                            .pagination a.active {
-                              background-color: #0f0f0f ;
-                              color: white;
-                            }
+                                    .pagination a.active {
+                                        background-color: #0f0f0f;
+                                        color: white;
+                                    }
 
-                            .pagination a:hover:not(.active) {background-color: #ddd;}
-                            </style>
-
-
-                            <?php
-
-                            $recordsPerPage = 10;
-                            $user_ids = $user['user_ids'];
+                                    .pagination a:hover:not(.active) {
+                                        background-color: #ddd;
+                                    }
+                                </style>
 
 
-                            $stmt_count = $conn->prepare('SELECT COUNT(*) as total FROM historial_pagos WHERE user_ids = :user_ids');
-                            $stmt_count->bindParam(':user_ids', $user_ids);
-                            $stmt_count->execute();
-                            $totalRecords = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
+                                <?php
 
-                            // Calcula la cantidad total de páginas
-                            $totalPages = ceil($totalRecords / $recordsPerPage);
-
-                            // Obtiene el número de la página actual, si no se especifica toma la primera página
-                            $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
-
-                            // Calcula el offset para la consulta SQL
-                            $offset = ($current_page - 1) * $recordsPerPage;
+                                $recordsPerPage = 10;
+                                $user_ids = $user['user_ids'];
 
 
-                            // Recupera el historial de pagos para el usuario actual
-                            $stmt_historial = $conn->prepare('SELECT fecha_pago, monto_pagado FROM historial_pagos WHERE user_ids = :user_ids ORDER BY fecha_pago DESC LIMIT :offset,
+                                $stmt_count = $conn->prepare('SELECT COUNT(*) as total FROM historial_pagos WHERE user_ids = :user_ids');
+                                $stmt_count->bindParam(':user_ids', $user_ids);
+                                $stmt_count->execute();
+                                $totalRecords = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
+
+                                // Calcula la cantidad total de páginas
+                                $totalPages = ceil($totalRecords / $recordsPerPage);
+
+                                // Obtiene el número de la página actual, si no se especifica toma la primera página
+                                $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+                                // Calcula el offset para la consulta SQL
+                                $offset = ($current_page - 1) * $recordsPerPage;
+
+
+                                // Recupera el historial de pagos para el usuario actual
+                                $stmt_historial = $conn->prepare('SELECT fecha_pago, monto_pagado FROM historial_pagos WHERE user_ids = :user_ids ORDER BY fecha_pago DESC LIMIT :offset,
                                 :limit');
-                            $stmt_historial->bindParam(':user_ids', $user_ids);
-                            $stmt_historial->bindParam(':offset', $offset, PDO::PARAM_INT);
-                            $stmt_historial->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
-                            $stmt_historial->execute();
-                            $result_historial = $stmt_historial->fetchAll(PDO::FETCH_ASSOC);
+                                $stmt_historial->bindParam(':user_ids', $user_ids);
+                                $stmt_historial->bindParam(':offset', $offset, PDO::PARAM_INT);
+                                $stmt_historial->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+                                $stmt_historial->execute();
+                                $result_historial = $stmt_historial->fetchAll(PDO::FETCH_ASSOC);
 
-                            // Muestra los registros del historial en la tabla HTML
-                            foreach ($result_historial as $pago) {
-                                echo "<tr>";
-                                echo "<td>" . $pago['fecha_pago'] . "</td>";
-                                echo "<td>" . $pago['monto_pagado'] . "</td>";
-                                echo "</tr>";
-                            }
+                                // Muestra los registros del historial en la tabla HTML
+                                foreach ($result_historial as $pago) {
+                                    $dateTime = new DateTime($pago['fecha_pago']);
+
+                                    //Intervalo de tiempo de dieferencia entre la base y la hora peruana
+                                    $interval = new DateInterval('PT1H51M54S');
+
+                                    // Resta el intervalo (diferencias)
+                                    $dateTime->sub($interval);
+
+                                    //Horario corregido
+                                    $nuevaFechaPago = $dateTime->format('Y-m-d H:i:s');
+
+                                    echo "<tr>";
+                                    echo "<td>" . $nuevaFechaPago . "</td>";
+                                    echo "<td>" . $pago['monto_pagado'] . "</td>";
+                                    echo "</tr>";
+                                    // echo "<tr>";
+                                    // echo "<td>" . $pago['fecha_pago'] . "</td>";
+                                    // echo "<td>" . $pago['monto_pagado'] . "</td>";
+                                    // echo "</tr>";
+                                }
 
 
 
-
-
-                            echo "<div class='pagination'>";
-                            for ($i = 1; $i <= $totalPages; $i++) {
-                                echo "<a 'margin=5px' href='historialPagos.php?page=$i'>$i</a> ";
-                                  // Display previous and next links
+                                echo "<div class='pagination'>";
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    echo "<a 'margin=5px' href='historialPagos.php?page=$i'>$i</a> ";
+                                    // Display previous and next links
                                 
-                            }
-                            echo "</div>";
+                                }
+                                echo "</div>";
 
-                            /*
-                            echo "<div class='pagination'>";
-                                echo "<a class='prev' href='historialPagos.php?page=" . ($current_page - 1) . "'>&#9665; Anterior</a> ";
-                                echo "<a class='next' href='historialPagos.php?page=" . ($current_page + 1) . "'>Siguiente &#9655;</a>";
-                            echo "</div>";
-                            */
-
-
-                            ?>
+                                /*
+                                echo "<div class='pagination'>";
+                                    echo "<a class='prev' href='historialPagos.php?page=" . ($current_page - 1) . "'>&#9665; Anterior</a> ";
+                                    echo "<a class='next' href='historialPagos.php?page=" . ($current_page + 1) . "'>Siguiente &#9655;</a>";
+                                echo "</div>";
+                                */
 
 
+                                ?>
 
-                            
 
-                        </tbody>
-                    </table>
 
-                        
+
+
+                            </tbody>
+                        </table>
+
+
                     </div>
-                      
+
 
 
 

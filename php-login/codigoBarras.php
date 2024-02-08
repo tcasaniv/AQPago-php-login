@@ -182,7 +182,7 @@ if (isset($_SESSION['user_id'])) {
 
 
                         <div class="row m-t-25" style="justify-content: center">
-                            <canvas id="qr" style="	max-width: 350px;max-height: 350px;width: 100%;"></canvas>
+                            <canvas id="qr" style="	max-width: 250px;max-height: 250px;width: 100%;"></canvas>
                         </div>
                     </div>
 
